@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { getByTestId, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Formulario from './index';
 
@@ -32,3 +32,39 @@ test('Deve chamar um evento de onSubmit ao clicar em realizar transação', () =
   userEvent.click(botao);
   expect(realizarTransacao).toHaveBeenCalledTimes(1);
 });
+
+describe('Deve ser possível selecionar uma opção do elemento <select/>', () => {
+  test('depósito', () => {
+    const realizarTransacao = jest.fn();
+    const { getByTestId } = render(
+      <Formulario realizarTransacao={realizarTransacao} />,
+    );
+
+    userEvent.selectOptions(getByTestId('select-opcoes'), ['Depósito']);
+    expect(getByTestId('select-opcoes')).toHaveValue('Depósito');
+  });
+
+  test('transferêcia', () => {
+    const realizarTransacao = jest.fn();
+    const { getByTestId } = render(
+      <Formulario realizarTransacao={realizarTransacao} />,
+    );
+
+    userEvent.selectOptions(getByTestId('select-opcoes'), ['Transferência']);
+    expect(getByTestId('select-opcoes')).toHaveValue('Transferência');
+  });
+});
+
+// Sugestão do instrutor |||
+
+// test('Deve ser possível bla bla bla', () => {
+//   render(<Formulario />);
+//   const select = screen.getByRole('combobox');
+//   userEvent.selectOptions(select, ['Depósito']);
+
+//   expect(
+//     screen.getByRole('option', { name: 'Selecione um tipo de transação' })
+//       .selected,
+//   ).toBe(false);
+//   expect(screen.getByRole('option', { name: 'Depósito' }).selected).toBe(true);
+// });
